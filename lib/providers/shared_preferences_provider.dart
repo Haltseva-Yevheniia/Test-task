@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_test_task/models/repository_model.dart';
 import 'package:riverpod_test_task/providers/local_history.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,18 +31,31 @@ class SharedPreferencesRepository {
   void setHistory(List<String> historyList) {
     if (historyList.isNotEmpty) {
       _preferences.setStringList(_historyKey, historyList);
-    } else {}
+    }
   }
 
 List<String> getHistory() {
     return _preferences.getStringList(_historyKey) ?? [];
   }
 
-  void setFavoriteIds (List<String> favoriteIds) {
-    _preferences.setStringList(_favoriteKey, favoriteIds);
+  void setFavoriteRepositories (List<RepositoryModel> repositories) {
+    // for 
+    List<String> list = [];
+    for (final repository in repositories) {
+      list.add(jsonEncode(repository));
+    }
+    _preferences.setStringList(_favoriteKey, list);
   }
 
-  List<String> getFavoriteIds () {
-    return _preferences.getStringList(_favoriteKey) ?? [];
+  List<RepositoryModel> getFavorites () {
+    // jSon decode and fromJson
+    List<RepositoryModel> favoriteList= [];
+     final list =_preferences.getStringList(_favoriteKey) ?? [];
+     for (final string in list) {
+       final decodeString = jsonDecode(string);
+       favoriteList.add(RepositoryModel.fromJson(decodeString));
+     }
+
+    return favoriteList;
   }
 }

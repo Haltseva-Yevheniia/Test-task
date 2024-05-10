@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:riverpod_test_task/providers/local_favorite_repository_provider.dart';
 
 import '../providers/repository_provider.dart';
+import '../providers/shared_preferences_provider.dart';
 import '../style/style.dart';
 import 'icon_not_favor_star.dart';
 import 'icon_star.dart';
-import 'search_bar_widget.dart';
 import 'search_card.dart';
 
 class SearchDataWidget extends ConsumerStatefulWidget {
@@ -36,55 +34,59 @@ class _SearchDataWidgetState extends ConsumerState<SearchDataWidget> {
   Widget build(BuildContext context) {
     final data = ref.watch(repositoryProvider);
 
-    return data.when(data: (data) {
-      // _scrollController.addListener(() {_onScroll(state.requestName); });
-      //TODO when scroll to down part of page
-      return ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          return Consumer(
-            builder: (BuildContext context, WidgetRef ref, Widget? child) {
-              final favoritId = ref.watch(listFavIdProvider);
-              return SearchCard(
-                name: data[index].name,
-                trailing: GestureDetector(
-                  onTap: () {
-                    ref.read(listFavIdProvider.notifier).toggle(
-                        data[index].id.toString());
-                    // data[index].copyWith(
-                    //   isFavorite: !data[index].isFavorite,
-                    // );
-                  },
-                  child: favoritId.contains(data[index].id.toString())
-                      ? const IconStar()
-                      : const IconNotFavoriteStar(),
-                  // data[index].isFavorite
-                  //     ? const IconStar()
-                  //     : const IconNotFavoriteStar(),
-                ),
-              );
-
-            },
-
-          );
-        },
-      );
-    }, error: (error, stackTrace) {
-      return Center(child: Text(error.toString()));
-    }, loading: () {
-      return const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 24,
-            ),
-            Center(
-              child: CupertinoActivityIndicator(
-                radius: 22,
-                color: Palette.spinner,
+    return data.when(
+      data: (data) {
+        // _scrollController.addListener(() {_onScroll(state.requestName); });
+        //TODO when scroll to down part of page
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            return Consumer(
+              builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                //ref.watch(listFavIdProvider);
+                final favorites =
+                    ref.watch(sharedPreferencesRepository).getFavorites();
+                return SearchCard(
+                  name: data[index].name,
+                  trailing: GestureDetector(
+                    onTap: () {
+                      ref
+                          .read(listFavoriteRepositoryProvider.notifier).add(data[index]);
+                      //ref.watch(provider)
+                          //.toggle(data[index].id.toString());
+                      //ref.read(sharedPreferencesProvider)   ;
+                    },
+                    child: favorites.contains(data[index])
+                        ? const IconStar()
+                        : const IconNotFavoriteStar(),
+                    // data[index].isFavorite
+                    //     ? const IconStar()
+                    //     : const IconNotFavoriteStar(),
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+      error: (error, stackTrace) {
+        return Center(child: Text(error.toString()));
+      },
+      loading: () {
+        return const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 24,
               ),
-            ),
-          ]);
-    },);
+              Center(
+                child: CupertinoActivityIndicator(
+                  radius: 22,
+                  color: Palette.spinner,
+                ),
+              ),
+            ]);
+      },
+    );
   }
 }

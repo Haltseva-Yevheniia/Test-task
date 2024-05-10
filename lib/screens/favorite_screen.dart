@@ -17,16 +17,18 @@ class FavoriteScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final repositories = ref.watch(repositoryProvider).value;
+    // final repositories = ref.watch(repositoryProvider).value;
+    //
+    // //final List <RepositoryModel> favoriteRepositories = ref.watch(listFavoriteRepositoryProvider);
+    // //final List<String> favIds = ref.watch(listFavIdProvider);
+    // final List<String> favIds = ref.watch(sharedPreferencesRepository).getFavorites();
+    // final List<RepositoryModel> favoriteList = (repositories != null)
+    //     ? repositories
+    //         .where((element) => favIds.contains(element.id.toString()))
+    //         .toList()
+    //     : [];
 
-    //final List <RepositoryModel> favoriteRepositories = ref.watch(listFavoriteRepositoryProvider);
-    //final List<String> favIds = ref.watch(listFavIdProvider);
-    final List<String> favIds = ref.watch(sharedPreferencesRepository).getFavoriteIds();
-    final List<RepositoryModel> favoriteList = (repositories != null)
-        ? repositories
-            .where((element) => favIds.contains(element.id.toString()))
-            .toList()
-        : [];
+    final List<RepositoryModel> favorites = ref.watch(sharedPreferencesRepository).getFavorites();
 
     return Scaffold(
       appBar: AppBar(
@@ -42,18 +44,16 @@ class FavoriteScreen extends ConsumerWidget {
         children: [
           Expanded(
             child: ListView.builder(
-                itemCount: favoriteList.length,
+                itemCount: favorites.length,
                 itemBuilder: (BuildContext context, int index) {
-                  if (favoriteList.isNotEmpty && favoriteList != null) {
+                  if (favorites.isNotEmpty) {
                     return SearchCard(
                         trailing: GestureDetector(
                             onTap: () {
-                              ref
-                                  .read(listFavIdProvider.notifier)
-                                  .toggle(favoriteList[index].id.toString());
+                              ref.watch(listFavoriteRepositoryProvider.notifier).remove(favorites[index]);
                             },
                             child: const IconStar()),
-                        name: favoriteList[index].name);
+                        name: favorites[index].name);
                   } else {
                     return const FailureStateWidget(
                         text: favoriteScreenEmptyBody);
