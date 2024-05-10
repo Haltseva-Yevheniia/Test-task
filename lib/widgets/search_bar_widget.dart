@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riverpod_test_task/providers/repository_provider.dart';
 import 'package:riverpod_test_task/providers/local_history.dart';
 import 'package:riverpod_test_task/providers/request_provider.dart';
+
 import '../constants.dart';
 import '../providers/is_sent_request_provider.dart';
 import '../style/style.dart';
@@ -32,12 +32,13 @@ class _SearchBarWidgetState extends ConsumerState<SearchBarWidget> {
         controller: searchController,
         textInputAction: TextInputAction.done,
         onEditingComplete: () {
-          ref.read(requestProvider.notifier).update((state) => searchController.text);
-          ref.read(localHistoryProvider.notifier).addHistory(searchController.text);
-          ref.read(isSentRequest.notifier).state = true;
-          ref.read(repositoryProvider);
-          searchController.clear();
+          ref.read(requestProvider.notifier).state = searchController.text;
 
+          ref
+              .read(localHistoryProvider.notifier)
+              .addHistory(searchController.text);
+          ref.read(isSentRequest.notifier).state = true;
+          searchController.clear();
         },
         focusNode: focusNode,
         onSubmitted: (value) {

@@ -27,7 +27,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget build(BuildContext context) {
 
 final isSent = ref.watch(isSentRequest);
-  // ref.read(localHistoryProvider.notifier).addHistory(request)
+
 
     return Scaffold(
         appBar: AppBar(

@@ -4,6 +4,7 @@ import 'package:riverpod_test_task/constants.dart';
 import 'package:riverpod_test_task/models/repository_model.dart';
 import 'package:riverpod_test_task/providers/local_favorite_repository_provider.dart';
 import 'package:riverpod_test_task/providers/repository_provider.dart';
+import 'package:riverpod_test_task/providers/shared_preferences_provider.dart';
 import 'package:riverpod_test_task/style/style.dart';
 import 'package:riverpod_test_task/widgets/failure_state_widget.dart';
 import 'package:riverpod_test_task/widgets/icon_star.dart';
@@ -15,11 +16,12 @@ class FavoriteScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     final repositories = ref.watch(repositoryProvider).value;
 
     //final List <RepositoryModel> favoriteRepositories = ref.watch(listFavoriteRepositoryProvider);
-    final List<String> favIds = ref.watch(listFavIdProvider);
-
+    //final List<String> favIds = ref.watch(listFavIdProvider);
+    final List<String> favIds = ref.watch(sharedPreferencesRepository).getFavoriteIds();
     final List<RepositoryModel> favoriteList = (repositories != null)
         ? repositories
             .where((element) => favIds.contains(element.id.toString()))

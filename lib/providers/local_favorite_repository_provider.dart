@@ -4,42 +4,25 @@ import 'package:riverpod_test_task/providers/repository_provider.dart';
 import 'package:riverpod_test_task/providers/shared_preferences_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// final localFavoriteProvider =
-// NotifierProvider<LocalFavoriteRepository, List<RepositoryModel>>(
-//         LocalFavoriteRepository.new);
 
-// final listFavIdProvider = StateProvider<List<String>>((ref) {
-//   final List<RepositoryModel> repositories = ref.read(repositoryProvider).value ?? [];
-//   final List<RepositoryModel> favoriteRepositories = (repositories != null)
-//       ? repositories.where((element) => element.isFavorite == true).toList()
-//       : [];
-//   return favoriteRepositories.map((e) => e.id.toString()).toList();
-// });
-
-final listFavIdProvider = StateNotifierProvider <ListFavId, List<String>>((
-    ref) {
-  ref.read(sharedPreferencesRepository);
-  return ListFavId();
-});
-
-class ListFavId extends StateNotifier<List<String>> {
-  //final SharedPreferences prefs;
+final listFavIdProvider = NotifierProvider <ListFavId, List<String>>(ListFavId.new);
 
 
-  ListFavId() : super ([]);
-
+class ListFavId extends Notifier<List<String>> {
 
   @override
   List<String> build() {
-    //final list = ref.read(listFavIdProvider);
-    return state;
+    return [];
+    //return ref.read(sharedPreferencesRepository).getFavoriteIds();
   }
 
   void toggle(String favId) {
     if (state.contains(favId)) {
       state = state.where((id) => id != favId).toList();
-    } else {
+      ref.read(sharedPreferencesRepository).setFavoriteIds(state);
+        } else {
       state = [...state, favId];
+      ref.read(sharedPreferencesRepository).setFavoriteIds(state);
     }
   }
 
