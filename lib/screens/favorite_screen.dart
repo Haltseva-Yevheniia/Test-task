@@ -11,24 +11,17 @@ import 'package:riverpod_test_task/widgets/icon_star.dart';
 import 'package:riverpod_test_task/widgets/leading_appbar.dart';
 import 'package:riverpod_test_task/widgets/search_card.dart';
 
-class FavoriteScreen extends ConsumerWidget {
+class FavoriteScreen extends ConsumerStatefulWidget {
   const FavoriteScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => _FavoriteScreenState();
+}
 
-    // final repositories = ref.watch(repositoryProvider).value;
-    //
-    // //final List <RepositoryModel> favoriteRepositories = ref.watch(listFavoriteRepositoryProvider);
-    // //final List<String> favIds = ref.watch(listFavIdProvider);
-    // final List<String> favIds = ref.watch(sharedPreferencesRepository).getFavorites();
-    // final List<RepositoryModel> favoriteList = (repositories != null)
-    //     ? repositories
-    //         .where((element) => favIds.contains(element.id.toString()))
-    //         .toList()
-    //     : [];
-
-    final List<RepositoryModel> favorites = ref.watch(sharedPreferencesRepository).getFavorites();
+class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final List<RepositoryModel> favorites = ref.watch(listFavoriteRepositoryProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -51,6 +44,7 @@ class FavoriteScreen extends ConsumerWidget {
                         trailing: GestureDetector(
                             onTap: () {
                               ref.watch(listFavoriteRepositoryProvider.notifier).remove(favorites[index]);
+
                             },
                             child: const IconStar()),
                         name: favorites[index].name);
@@ -65,3 +59,48 @@ class FavoriteScreen extends ConsumerWidget {
     );
   }
 }
+
+// class FavoriteScreen extends ConsumerWidget {
+//   const FavoriteScreen({super.key});
+//
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//
+//        final List<RepositoryModel> favorites = ref.read(listFavoriteRepositoryProvider);
+//
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text(
+//           navigationBarFavoriteScreen,
+//           style: FontStyles.headerMain,
+//         ),
+//         centerTitle: true,
+//         automaticallyImplyLeading: true,
+//         leading: const LeadingAppBar(),
+//       ),
+//       body: Column(
+//         children: [
+//           Expanded(
+//             child: ListView.builder(
+//                 itemCount: favorites.length,
+//                 itemBuilder: (BuildContext context, int index) {
+//                   if (favorites.isNotEmpty) {
+//                     return SearchCard(
+//                         trailing: GestureDetector(
+//                             onTap: () {
+//                               ref.watch(listFavoriteRepositoryProvider.notifier).remove(favorites[index]);
+//
+//                             },
+//                             child: const IconStar()),
+//                         name: favorites[index].name);
+//                   } else {
+//                     return const FailureStateWidget(
+//                         text: favoriteScreenEmptyBody);
+//                   }
+//                 }),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

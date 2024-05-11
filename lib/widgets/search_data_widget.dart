@@ -32,7 +32,9 @@ class _SearchDataWidgetState extends ConsumerState<SearchDataWidget> {
 
   @override
   Widget build(BuildContext context) {
+
     final data = ref.watch(repositoryProvider);
+//ref.watch(listFavoriteRepositoryProvider);
 
     return data.when(
       data: (data) {
@@ -43,25 +45,19 @@ class _SearchDataWidgetState extends ConsumerState<SearchDataWidget> {
           itemBuilder: (context, index) {
             return Consumer(
               builder: (BuildContext context, WidgetRef ref, Widget? child) {
-                //ref.watch(listFavIdProvider);
-                final favorites =
-                    ref.watch(sharedPreferencesRepository).getFavorites();
+                final favorites = ref.watch(listFavoriteRepositoryProvider);
+                final isFavorite = favorites.any((repos) => repos.id == data[index].id);
                 return SearchCard(
                   name: data[index].name,
                   trailing: GestureDetector(
                     onTap: () {
                       ref
-                          .read(listFavoriteRepositoryProvider.notifier).add(data[index]);
-                      //ref.watch(provider)
-                          //.toggle(data[index].id.toString());
-                      //ref.read(sharedPreferencesProvider)   ;
-                    },
-                    child: favorites.contains(data[index])
-                        ? const IconStar()
-                        : const IconNotFavoriteStar(),
-                    // data[index].isFavorite
-                    //     ? const IconStar()
-                    //     : const IconNotFavoriteStar(),
+                          .read(listFavoriteRepositoryProvider.notifier).toggle(data[index]);
+                                          },
+                    child: isFavorite ? const IconStar()
+                    : const IconNotFavoriteStar()
+
+
                   ),
                 );
               },

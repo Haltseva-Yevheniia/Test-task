@@ -16,8 +16,7 @@ throw UnimplementedError();
 
 final sharedPreferencesRepository = Provider<SharedPreferencesRepository>((ref) {
   final sharedPrefs = ref.watch(sharedPreferencesProvider);
-  //final historyList = ref.read(localHistoryProvider);
-  return SharedPreferencesRepository(preferences: sharedPrefs);
+   return SharedPreferencesRepository(preferences: sharedPrefs);
 });
 
 class SharedPreferencesRepository {
@@ -39,7 +38,7 @@ List<String> getHistory() {
   }
 
   void setFavoriteRepositories (List<RepositoryModel> repositories) {
-    // for 
+  // jsonEncode makes from Map String
     List<String> list = [];
     for (final repository in repositories) {
       list.add(jsonEncode(repository));
@@ -48,7 +47,6 @@ List<String> getHistory() {
   }
 
   List<RepositoryModel> getFavorites () {
-    // jSon decode and fromJson
     List<RepositoryModel> favoriteList= [];
      final list =_preferences.getStringList(_favoriteKey) ?? [];
      for (final string in list) {

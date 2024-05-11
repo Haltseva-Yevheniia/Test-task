@@ -9,13 +9,6 @@ class RepositoryModel {
   factory RepositoryModel.fromJson(Map<String, dynamic> json) =>
       RepositoryModel(name: json['name'], id: json['id']);
 
-  // String toJson() {
-  //   return "{"
-  //       "\"name\": \"$name\","
-  //       "\"id\":\"$id\","
-  //       "}";
-  // }
-
   Map toJson() => {
     'name': name,
     'id': id,
