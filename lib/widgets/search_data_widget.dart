@@ -38,7 +38,7 @@ class _SearchDataWidgetState extends ConsumerState<SearchDataWidget> {
     ref.watch(repositoriesProvider);
     return data.when(
       data: (data) {
-       if (data.isNotEmpty) {
+        if (data.isNotEmpty) {
           _scrollController.addListener(() {
             _onScroll();
           });
@@ -67,7 +67,9 @@ class _SearchDataWidgetState extends ConsumerState<SearchDataWidget> {
               );
             },
           );
-        } else {return const SearchScreenFailureWidget();}
+        } else {
+          return const SearchScreenFailureWidget();
+        }
       },
       error: (error, stackTrace) {
         return Center(child: Text(error.toString()));
