@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_test_task/providers/local_favorite_repository_provider.dart';
 
 import '../providers/repository_provider.dart';
-import '../providers/shared_preferences_provider.dart';
 import '../style/style.dart';
 import 'icon_not_favor_star.dart';
 import 'icon_star.dart';
@@ -32,7 +32,6 @@ class _SearchDataWidgetState extends ConsumerState<SearchDataWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     final data = ref.watch(repositoryProvider);
 //ref.watch(listFavoriteRepositoryProvider);
 
@@ -46,19 +45,19 @@ class _SearchDataWidgetState extends ConsumerState<SearchDataWidget> {
             return Consumer(
               builder: (BuildContext context, WidgetRef ref, Widget? child) {
                 final favorites = ref.watch(listFavoriteRepositoryProvider);
-                final isFavorite = favorites.any((repos) => repos.id == data[index].id);
+                final isFavorite =
+                    favorites.any((repos) => repos.id == data[index].id);
                 return SearchCard(
                   name: data[index].name,
                   trailing: GestureDetector(
-                    onTap: () {
-                      ref
-                          .read(listFavoriteRepositoryProvider.notifier).toggle(data[index]);
-                                          },
-                    child: isFavorite ? const IconStar()
-                    : const IconNotFavoriteStar()
-
-
-                  ),
+                      onTap: () {
+                        ref
+                            .read(listFavoriteRepositoryProvider.notifier)
+                            .toggle(data[index]);
+                      },
+                      child: isFavorite
+                          ? const IconStar()
+                          : const IconNotFavoriteStar()),
                 );
               },
             );
