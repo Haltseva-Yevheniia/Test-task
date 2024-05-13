@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_test_task/constants.dart';
 import 'package:riverpod_test_task/models/repository_model.dart';
 import 'package:riverpod_test_task/providers/local_favorite_repository_provider.dart';
-import 'package:riverpod_test_task/providers/repository_provider.dart';
-import 'package:riverpod_test_task/providers/shared_preferences_provider.dart';
 import 'package:riverpod_test_task/style/style.dart';
 import 'package:riverpod_test_task/widgets/failure_state_widget.dart';
 import 'package:riverpod_test_task/widgets/icon_star.dart';
@@ -21,7 +19,8 @@ class FavoriteScreen extends ConsumerStatefulWidget {
 class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
-    final List<RepositoryModel> favorites = ref.watch(listFavoriteRepositoryProvider);
+    final List<RepositoryModel> favorites =
+        ref.watch(listFavoriteRepositoryProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -43,8 +42,10 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
                     return SearchCard(
                         trailing: GestureDetector(
                             onTap: () {
-                              ref.watch(listFavoriteRepositoryProvider.notifier).remove(favorites[index]);
-
+                              ref
+                                  .watch(
+                                      listFavoriteRepositoryProvider.notifier)
+                                  .remove(favorites[index]);
                             },
                             child: const IconStar()),
                         name: favorites[index].name);

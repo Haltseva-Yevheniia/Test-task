@@ -14,36 +14,35 @@ void logResponse(http.Response response) {
   log('${response.request?.method.toUpperCase()} \n${response.request?.url}  \n${response.statusCode} \n${response.body.toString()} ');
 }
 
-final repositoriesProvider = NotifierProvider <Repositories, List<RepositoryModel>> (Repositories.new);
+final repositoriesProvider =
+    NotifierProvider<Repositories, List<RepositoryModel>>(Repositories.new);
 
-
-class Repositories extends Notifier <List<RepositoryModel> >{
+class Repositories extends Notifier<List<RepositoryModel>> {
   @override
   build() {
     return ref.read(repositoryProvider).value ?? [];
   }
 
-  void addRepositories () {
-     ref.read(pageProvider.notifier).state++;
+  void addRepositories() {
+    ref.read(pageProvider.notifier).state++;
     final repositories = ref.read(repositoryProvider).value;
 
-      state = [...state, ...?repositories];
-
+    state = [...state, ...?repositories];
   }
-
 }
 
 final repositoryProvider = FutureProvider<List<RepositoryModel>>((ref) async {
   final name = ref.watch(requestProvider);
 
   final page = ref.watch(pageProvider);
-  return ref.watch(apiServiceProvider).fetchRepositories(name: name, page:page);
+  return ref
+      .watch(apiServiceProvider)
+      .fetchRepositories(name: name, page: page);
 });
 
 final apiServiceProvider = Provider<ApiService>((ref) => ApiService());
 
 class ApiService {
-
   Future<List<RepositoryModel>> fetchRepositories(
       {required String name, int? page = 1}) async {
     try {
@@ -69,10 +68,8 @@ class ApiService {
       logResponse(response);
       return repositories;
     } catch (e) {
-      print(e);
+      log('$e');
       return [];
     }
   }
 }
-
-

@@ -1,9 +1,6 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_test_task/providers/is_sent_request_provider.dart';
-import 'package:riverpod_test_task/providers/local_history.dart';
 import 'package:riverpod_test_task/widgets/search_history_widget.dart';
 
 import '../constants.dart';
@@ -21,37 +18,32 @@ class SearchScreen extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
-  
-
   @override
   Widget build(BuildContext context) {
-
-final isSent = ref.watch(isSentRequest);
-
+    final isSent = ref.watch(isSentRequest);
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            navigationBarSearchScreen,
-            style: FontStyles.headerMain,
-          ),
-          centerTitle: true,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const FavoriteScreen()));
-                  },
-                  child: const IconFavoriteList()),
-            ),
-          ],
+      appBar: AppBar(
+        title: const Text(
+          navigationBarSearchScreen,
+          style: FontStyles.headerMain,
         ),
-        body:
-        Column(
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FavoriteScreen()));
+                },
+                child: const IconFavoriteList()),
+          ),
+        ],
+      ),
+      body: Column(
         children: [
           const Divider(height: 1, thickness: 1, color: Palette.layer1),
           const Padding(
@@ -72,11 +64,11 @@ final isSent = ref.watch(isSentRequest);
             ),
           ),
           Expanded(
-            child: isSent ? const SearchDataWidget() : const SearchHistoryWidget(),
+            child:
+                isSent ? const SearchDataWidget() : const SearchHistoryWidget(),
           )
-        ],),
-      );
-    }
-
+        ],
+      ),
+    );
+  }
 }
-

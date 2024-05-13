@@ -16,7 +16,7 @@ Future<void> main() async {
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
-      child: TestApp(),
+      child: const TestApp(),
     ),
   );
 }
@@ -26,7 +26,7 @@ class TestApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: LoadingScreen(),
     );

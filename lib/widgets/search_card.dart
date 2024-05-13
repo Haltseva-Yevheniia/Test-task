@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../style/style.dart';
 
-
 class SearchCard extends StatelessWidget {
   final String name;
   final Widget trailing;

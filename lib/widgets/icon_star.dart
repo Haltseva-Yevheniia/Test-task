@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../style/style.dart';
 
-
 class IconStar extends StatelessWidget {
   const IconStar({super.key});
 

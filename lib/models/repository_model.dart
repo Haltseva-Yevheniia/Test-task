@@ -10,9 +10,9 @@ class RepositoryModel {
       RepositoryModel(name: json['name'], id: json['id']);
 
   Map toJson() => {
-    'name': name,
-    'id': id,
-  };
+        'name': name,
+        'id': id,
+      };
 
   RepositoryModel copyWith({
     int? id,

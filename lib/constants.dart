@@ -3,11 +3,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 ///
 
- String? myToken = dotenv.env['TOKEN'];
+String? myToken = dotenv.env['TOKEN'];
 const String baseURL = 'api.github.com';
 const String pathURL = 'search/repositories';
 const int searchResultsOutput = 15;
- Map<String, String> headers = {
+Map<String, String> headers = {
   'Accept': 'application/vnd.github+json',
   'Authorization': 'Bearer $myToken',
 };

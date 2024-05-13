@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../style/style.dart';
 
-
 class IconGoBack extends StatelessWidget {
   const IconGoBack({super.key});
 
